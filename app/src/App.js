@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useReducer} from 'react';
-import {Timeseries, Cards, Table, DatePicker} from './components'
+import {Timeseries, Cards, Table, DatePicker, CountryColorPicker} from './components'
 import GlobalState, {reducer, SET_DATE_RANGE} from './components/global-state'
 import {fetchData, getCountryTotalsInDateRange} from './api'
 import styles from './app.module.css'
@@ -10,9 +10,7 @@ const initialState = {
     start: null,
     end: null
   },
-  countryColors: {
-    //default
-  }
+  countryToColor: {}
 }
 
 const App = () => {
@@ -45,6 +43,8 @@ const App = () => {
         <Table countryTotals={state.dateRange.start && state.dateRange.end ?
           getCountryTotalsInDateRange(all, dates, state.dateRange.start, state.dateRange.end) : []
         } />
+
+        <CountryColorPicker countriesMap={all} />
       </div>
     </GlobalState>
   );
