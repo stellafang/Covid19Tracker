@@ -1,4 +1,7 @@
-.date {
+.dateRange {
     box-sizing: border-box;
     display: inline-block;
+}
+.date {
+    margin: 10px !important;
 }

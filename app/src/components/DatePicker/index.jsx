@@ -6,10 +6,9 @@ import {GlobalStateContext, GlobalDispatchContext, SET_DATE_RANGE} from '../glob
 
 function DatePicker(props) {
     const globalState = useContext(GlobalStateContext)
-    const {dateRange} = globalState
     const dispatch = useContext(GlobalDispatchContext)
-
-
+    const {dates} = props
+    const {dateRange} = globalState
     const handleStartDateChange = (date) => {
         console.log('start date changed: ', date)
         dispatch({
@@ -29,30 +28,34 @@ function DatePicker(props) {
     }
 
     return (
-        <div className={styles.date}>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-                <MaterialDatePicker
-                    disableToolbar
-                    variant="inline"
-                    label="Start Date"
-                    helperText="Choose a start date"
-                    value={dateRange.start}
-                    onChange={handleStartDateChange}
-                    minDate={new Date('2020-01-22')}
-                    maxDate={new Date('2020-04-25')}
-                />
+        <div className={styles.dateRange}>
+            {dateRange.start && dateRange.end ?
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <MaterialDatePicker
+                        className={styles.date}
+                        disableToolbar
+                        variant="inline"
+                        label="Start Date"
+                        helperText="Choose a start date"
+                        value={dateRange.start}
+                        onChange={handleStartDateChange}
+                        minDate={dates[0]}
+                        maxDate={dates[dates.length - 1]}
+                    />
+                    <MaterialDatePicker
+                        className={styles.date}
+                        disableToolbar
+                        variant="inline"
+                        label="End Date"
+                        helperText="Choose an end date"
+                        value={dateRange.end}
+                        onChange={handleEndDateChange}
+                        minDate={dates[0]}
+                        maxDate={dates[dates.length - 1]}
+                    />
+                </MuiPickersUtilsProvider> : null
+            }
 
-                <MaterialDatePicker
-                    disableToolbar
-                    variant="inline"
-                    label="End Date"
-                    helperText="Choose an end date"
-                    value={dateRange.end}
-                    onChange={handleEndDateChange}
-                    minDate={new Date('2020-01-22')}
-                    maxDate={new Date('2020-04-25')}
-                />
-            </MuiPickersUtilsProvider>
         </div>
 
     );
