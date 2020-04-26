@@ -1,0 +1,17 @@
+.root {
+    margin: 10px;
+}
+
+.text {
+    font-size: 15px;
+}
+
+.palette {
+    position: absolute;
+    z-index: 100;
+}
+
+.preview {
+    height: 30px;
+    border: none;
+}
