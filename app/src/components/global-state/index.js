@@ -6,7 +6,6 @@ export const GlobalStateContext = React.createContext();
 export const GlobalDispatchContext = React.createContext();
 
 // Actions
-export const SET_SELECTED_COUNTRIES = "SET_SELECTED_COUNTRIES";
 export const SET_DATE_RANGE = "SET_DATE_RANGE";
 
 // Reducer
@@ -14,12 +13,6 @@ export const reducer = (state, action) => {
     const {type, payload} = action;
 
     switch (type) {
-        case SET_SELECTED_COUNTRIES: {
-            return {
-                ...state,
-                selectedCountries: payload
-            };
-        }
         case SET_DATE_RANGE: {
             return {
                 ...state,
