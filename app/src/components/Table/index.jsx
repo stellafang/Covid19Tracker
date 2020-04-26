@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types'
 import styles from './index.module.css'
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from '@material-ui/core'
-import {getCountryTotalsInDateRangeSync} from '../../api'
+
 
 //TODO: background color for each row!!
 
