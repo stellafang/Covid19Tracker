@@ -12,7 +12,7 @@ const Cards = (props) => {
     return (
         <div className={styles.container}>
             <Grid container spacing={3} justify='center'>
-                <Grid className={styles.card} xs={12} md={3} item component={Card}>
+                <Grid className={styles.card} xs={3} md={12} item component={Card}>
                     <CardContent>
                         <Typography color="textSecondary" gutterBottom>World Total Confirmed Cases</Typography>
                         <Typography variant="h5">
@@ -26,7 +26,7 @@ const Cards = (props) => {
                         <Typography color="textSecondary">{lastUpdated.toDateString()}</Typography>
                     </CardContent>
                 </Grid>
-                <Grid className={styles.card} xs={12} md={3} item component={Card}>
+                <Grid className={styles.card} xs={3} md={12} item component={Card}>
                     <CardContent>
                         <Typography color="textSecondary" gutterBottom>World Total Confirmed Cases</Typography>
                         <Typography variant="h5">
@@ -40,7 +40,7 @@ const Cards = (props) => {
                         <Typography color="textSecondary">{lastUpdated.toDateString()}</Typography>
                     </CardContent>
                 </Grid>
-                <Grid className={styles.card} xs={12} md={3} item component={Card}>
+                <Grid className={styles.card} xs={3} md={12} item component={Card}>
                     <CardContent>
                         <Typography color="textSecondary" gutterBottom>World Total Confirmed Cases</Typography>
                         <Typography variant="h5">
