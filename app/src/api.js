@@ -8,9 +8,7 @@ export const fetchData = async () => {
         const {data} = await axios.get(url)
         const dates = await getDates(data)
         const worldTotals = await getWorldTotals(data)
-        console.log('WORLD TOTALS', worldTotals)
-        // const countryTotals = await getCountryTotalsInDateRange(data, dates, dates[0], dates[dates.length - 1])
-        // console.log('countryTotals ', countryTotals)
+
         return {
             all: data,
             worldTotals,
@@ -39,6 +37,7 @@ const getWorldTotals = async (data) => {
 
     return worldTotals
 }
+
 
 /**
  * Get the total number confirmed, deaths, recovered cases between the given dates (start date inclusive).

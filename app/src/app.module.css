@@ -1,7 +1,4 @@
 .app {
-    box-sizing: border-box;
-}
-.content {
     display: flex;
     align-items: center;
     flex-direction: column;
