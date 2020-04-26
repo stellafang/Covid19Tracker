@@ -1,10 +1,4 @@
 .root {
-    margin-top: 20px;
-    width: '64%';
-    justify-content: center;
-}
-
-.container {
-    max-height: 440;
-    display: flex;
+    margin-top: 10px;
+    width: 100%;
 }
