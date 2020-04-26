@@ -1,1 +1,0 @@
-// props have optional limit where checkboxes grey out once limit reached (maxSelected)
