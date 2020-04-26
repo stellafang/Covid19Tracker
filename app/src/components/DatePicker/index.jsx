@@ -14,7 +14,7 @@ function DatePicker(props) {
         console.log('start date changed: ', date)
         dispatch({
             type: SET_DATE_RANGE, payload: {
-                startDate: date, endDate: globalState.dateRange.end
+                start: date.toDate(), end: globalState.dateRange.end
             }
         })
     }
@@ -23,7 +23,7 @@ function DatePicker(props) {
         console.log('end date changed: ', date)
         dispatch({
             type: SET_DATE_RANGE, payload: {
-                startDate: date, endDate: globalState.dateRange.end
+                start: globalState.dateRange.start, end: date.toDate()
             }
         })
     }

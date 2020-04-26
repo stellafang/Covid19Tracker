@@ -23,7 +23,7 @@ const Cards = (props) => {
                                 separator=","
                             />
                         </Typography>
-                        <Typography color="textSecondary">{new Date(lastUpdated).toDateString()}</Typography>
+                        <Typography color="textSecondary">{lastUpdated.toDateString()}</Typography>
                     </CardContent>
                 </Grid>
                 <Grid className={styles.card} xs={12} md={3} item component={Card}>
@@ -37,7 +37,7 @@ const Cards = (props) => {
                                 separator=","
                             />
                         </Typography>
-                        <Typography color="textSecondary">{new Date(lastUpdated).toDateString()}</Typography>
+                        <Typography color="textSecondary">{lastUpdated.toDateString()}</Typography>
                     </CardContent>
                 </Grid>
                 <Grid className={styles.card} xs={12} md={3} item component={Card}>
@@ -51,7 +51,7 @@ const Cards = (props) => {
                                 separator=","
                             />
                         </Typography>
-                        <Typography color="textSecondary">{new Date(lastUpdated).toDateString()}</Typography>
+                        <Typography color="textSecondary">{lastUpdated.toDateString()}</Typography>
                     </CardContent>
                 </Grid>
             </Grid>

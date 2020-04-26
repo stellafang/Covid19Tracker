@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types'
 import styles from './index.module.css'
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow} from '@material-ui/core'
-
+import {getCountryTotalsInDateRangeSync} from '../../api'
 
 //TODO: background color for each row!!
 
@@ -30,15 +30,10 @@ const columns = [
 
 const CustomTable = (props) => {
     const {countryTotals} = props
-    let rows = countryTotals ? Object.entries(countryTotals)
-        .map(([country, {totalConfirmed, totalDeaths, totalRecovered}]) => (
-            {country, totalConfirmed, totalDeaths, totalRecovered}
-        )) : []
-    console.log('rowss: ', rows)
-
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+    let rows = countryTotals || []
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -66,7 +61,7 @@ const CustomTable = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.length ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        {rows.length > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
