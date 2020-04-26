@@ -5,8 +5,3 @@
     height: 100%;
     flex-direction: column;
 }
-
-.formControl {
-    width: 20%;
-    margin: 10px !important;
-}

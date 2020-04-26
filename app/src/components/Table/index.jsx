@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types'
 import styles from './index.module.css'
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Grid} from '@material-ui/core'
-
-
-//TODO: background color for each row!!
+import {GlobalStateContext} from '../global-state'
 
 const columns = [
     {id: 'country', label: 'Country', minWidth: 170},
@@ -32,6 +30,7 @@ const CustomTable = (props) => {
     const {countryTotals} = props
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const globalState = useContext(GlobalStateContext)
 
     let rows = countryTotals || []
     const handleChangePage = (event, newPage) => {
@@ -64,7 +63,7 @@ const CustomTable = (props) => {
                         <TableBody>
                             {rows.length > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 return (
-                                    <TableRow style={{backgroundColor: 'white'}} hover role="checkbox" tabIndex={- 1} key={row['country']}>
+                                    <TableRow style={{backgroundColor: globalState.countryToColor[row['country']]}} hover role="checkbox" tabIndex={- 1} key={row['country']}>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
