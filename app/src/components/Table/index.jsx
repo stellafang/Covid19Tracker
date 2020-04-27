@@ -37,14 +37,13 @@ const Table = (props) => {
         <Grid className={styles.container} container item xs={12} md={9} justify='center'>
             <Paper className={styles.root}>
                 <TableContainer>
-                    <MaterialTable stickyHeader aria-label="sticky table">
+                    <MaterialTable size='small' stickyHeader aria-label="sticky table" >
                         <TableHead>
                             <TableRow>
                                 {columns && columns.map((column, i) => (
                                     <TableCell
                                         key={column.id}
-                                        align={i === 0 ? 'left' : 'right'}
-                                        style={{minWidth: Math.max(680 / columns.length, 100)}} >
+                                        align={i === 0 ? 'left' : 'right'}>
                                         {column.label || ''}
                                     </TableCell>
                                 ))}
