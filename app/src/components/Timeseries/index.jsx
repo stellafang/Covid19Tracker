@@ -8,7 +8,6 @@ import {GlobalStateContext} from '../../global-state'
 const fontColor = 'Gray'
 const fontFamily = 'Georgia'
 
-// TODO: Create skeleton block
 const Timeseries = (props) => {
     const {countries, datapoints, dates, defaultSelected} = props
     const globalState = useContext(GlobalStateContext)
