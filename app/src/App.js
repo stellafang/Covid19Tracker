@@ -13,10 +13,18 @@ const initialState = {
   countryToColor: {}
 }
 
+const tableColumns = [
+  {id: 'country', label: 'Country'},
+  {id: 'totalConfirmed', label: 'Confirmed'},
+  {id: 'totalDeaths', label: 'Death'},
+  {id: 'totalRecovered', label: 'Recovered'},
+]
+
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [data, setData] = useState({})
   const {all, dates, worldTotals, countries} = data
+  const {dateRange, countryToColor} = state
 
   const getData = async () => {
     const res = await fetchData()
@@ -28,6 +36,8 @@ const App = () => {
     })
   }
 
+  const tableRows = dateRange.start && dateRange.end ?
+    getCountryTotalsInDateRange(all, dates, dateRange.start, dateRange.end) : []
 
   useEffect(() => {
     getData()
@@ -40,10 +50,9 @@ const App = () => {
         <DatePicker dates={dates} />
         {/* {dates ? <Cards totals={worldTotals} lastUpdated={dates[dates.length - 1]} /> : null} */}
         <Timeseries all={all} dates={dates} dateRange={state.dateRange} countries={countries} />
-        <Table countryTotals={state.dateRange.start && state.dateRange.end ?
-          getCountryTotalsInDateRange(all, dates, state.dateRange.start, state.dateRange.end) : []
-        } />
 
+        <h2>Total Confirmed Cases by Country in Selected Date Range</h2>
+        <Table rows={tableRows} columns={tableColumns} rowColorByFirstColumnMap={countryToColor} />
         <CountryColorPicker countriesMap={all} />
       </div>
     </GlobalState>
