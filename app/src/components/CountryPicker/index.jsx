@@ -25,7 +25,7 @@ const CountryPicker = (props) => {
 
 
     return (countriesMap ? <div className={styles.root}>
-        <FormControl size='small' fullWidth='true' variant="outlined">
+        <FormControl size='small' fullWidth={true} variant="outlined">
             <InputLabel>Country</InputLabel>
             {
                 props.multiple ? <Select

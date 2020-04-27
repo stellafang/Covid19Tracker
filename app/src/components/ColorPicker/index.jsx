@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import styles from './index.module.css'
 import {ChromePicker} from 'react-color'
 import useComponentVisible from '../useComponentVisible.jsx'
 
 const ColorPicker = (props) => {
-    const {defaultColor, onSelectColor} = props
+    const {defaultColor, handler} = props
     const {ref, isComponentVisible, setIsComponentVisible} = useComponentVisible(false);
     const [color, setColor] = useState(defaultColor)
 
@@ -14,7 +14,7 @@ const ColorPicker = (props) => {
     }
     const selectColor = ({hex}) => {
         setColor(hex)
-        onSelectColor(hex)
+        handler(hex)
     }
 
     return (
@@ -23,7 +23,6 @@ const ColorPicker = (props) => {
             <input
                 className={styles.text}
                 type='text'
-                name='color-picker-text'
                 value={color}
                 onClick={toggleVisibility}
                 readOnly={true} />
@@ -40,9 +39,14 @@ const ColorPicker = (props) => {
 
 ColorPicker.propTypes = {
     /**
-     * RGB code
+     * The color to initialize the Color Picker with in RGB code.
      */
-    defaultColor: PropTypes.string
+    defaultColor: PropTypes.string,
+
+    /**
+     * Handler called when color is selected.
+     */
+    handler: PropTypes.func
 }
 
 export default ColorPicker
