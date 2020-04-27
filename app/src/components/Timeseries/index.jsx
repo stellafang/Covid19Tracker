@@ -62,7 +62,6 @@ const Timeseries = (props) => {
                                 display: true,
                                 labelString: 'Date',
                                 fontFamily: 'Georgia',
-                                fontFamily: 'Georgia',
                                 fontColor: 'Gray',
                             }
                         }]
