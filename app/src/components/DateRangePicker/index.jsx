@@ -8,24 +8,28 @@ import styles from './index.module.css'
 const DatePicker = (props) => {
     const {selected, min, max, onChange, label, helperText} = props
 
-    return (selected && <MaterialDatePicker
-        className={styles.date}
-        disableToolbar
-        variant="inline"
-        label={label}
-        helperText={helperText}
-        value={selected}
-        onChange={onChange}
-        minDate={min}
-        maxDate={max}
-    />)
+    return (selected &&
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+            <MaterialDatePicker
+                className={styles.date}
+                disableToolbar
+                variant="inline"
+                label={label}
+                helperText={helperText}
+                value={selected}
+                onChange={(momentDate) => onChange(momentDate.toDate())}
+                minDate={min}
+                maxDate={max}
+            />
+        </MuiPickersUtilsProvider>
+    )
 }
 
 DatePicker.propTypes = {
     selected: PropTypes.instanceOf(Date),
-    min: PropTypes.instanceOf(Date),
-    max: PropTypes.instanceOf(Date),
-    handler: PropTypes.func,
+    min: PropTypes.object,
+    max: PropTypes.object,
+    onChange: PropTypes.func,
     label: PropTypes.string,
     helperText: PropTypes.string
 }
@@ -38,7 +42,7 @@ function DateRangePicker(props) {
     return (
         <div className={styles.dateRange}>
             {startDate && endDate &&
-                <MuiPickersUtilsProvider utils={MomentUtils}>
+                <React.Fragment>
                     <DatePicker
                         label="Start Date"
                         helperText="Choose a start date"
@@ -61,7 +65,7 @@ function DateRangePicker(props) {
                         min={startDate}
                         max={max}
                     />
-                </MuiPickersUtilsProvider>
+                </React.Fragment>
             }
 
         </div>

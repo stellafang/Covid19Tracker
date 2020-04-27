@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import styles from './index.module.css'
 import {ChromePicker} from 'react-color'
-import useComponentVisible from '../useComponentVisible.jsx'
+import useComponentVisible from '../../components/ClickOutsideDetector'
 
 const ColorPicker = (props) => {
     const {defaultColor, handler} = props

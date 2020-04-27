@@ -1,0 +1,1 @@
+export const SET_COUNTRY_TO_COLOR = 'SET_COUNTRY_TO_COLOR'

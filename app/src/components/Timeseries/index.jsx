@@ -3,40 +3,39 @@ import PropTypes from 'prop-types'
 import {Chart, Line} from 'react-chartjs-2'
 import styles from './index.module.css'
 import ItemPicker from '../../components/ItemPicker'
-import {GlobalStateContext} from '../global-state'
-import {toReadableDates, getDiffInDays, getSubsetDates} from '../../utils'
+import {GlobalStateContext} from '../../global-state'
 
+const fontColor = 'Gray'
+const fontFamily = 'Georgia'
+
+// TODO: Create skeleton block
 const Timeseries = (props) => {
+    const {countries, datapoints, dates, defaultSelected} = props
     const globalState = useContext(GlobalStateContext)
-    const defaultCountries = ['Canada', 'China']
-    const [countries, setCountries] = React.useState(defaultCountries);
-    const {all, dateRange} = props
-    let dates = props.dates
-
-    let startDateIndex = dates && getDiffInDays(dates[0], dateRange.start)
-    let endDateIndex = dates && getDiffInDays(dates[0], dateRange.end) + 1
-
-    const handleChange = (selectedCountries) => {
-        setCountries(selectedCountries)
-    };
+    const [selected, setSelected] = React.useState(defaultSelected);
 
     useEffect(() => {
         Chart.pluginService.register({
             beforeDraw: ((c, opts) => responsiveChartSizing(c))
         })
-    }, [setCountries, props.dateRange, globalState.countryToColor])
+    }, [setSelected, props.dateRange, globalState.countryToColor])
 
     return (
         <div className={styles.timeseries}>
-            {props.countries && <div className={styles.countryPicker}>
-                <ItemPicker label='Country' items={props.countries} handler={handleChange} multiple={true} defaultSelected={defaultCountries} />
+            {countries && <div className={styles.countryPicker}>
+                <ItemPicker
+                    label='Country'
+                    items={countries}
+                    handler={(v) => setSelected(v)}
+                    multiple={true}
+                    defaultSelected={defaultSelected} />
             </div>}
 
-            {all ? <Line classNames
+            {datapoints && dates && <Line classNames
                 data={{
-                    labels: toReadableDates(getSubsetDates(dates, dateRange.start, dateRange.end)),
-                    datasets: countries.map((country) => ({
-                        data: all[country].slice(startDateIndex, endDateIndex).map(({confirmed}) => confirmed),
+                    labels: dates,
+                    datasets: selected.map((country) => ({
+                        data: datapoints[country],
                         label: country,
                         borderColor: globalState.countryToColor[country] || '#000000',
                     }))
@@ -45,7 +44,7 @@ const Timeseries = (props) => {
                     title: {
                         display: true,
                         text: 'Total # of Confirmed Cases per Country',
-                        fontFamily: 'Georgia',
+                        fontFamily,
                         fontStyle: 'normal'
                     },
                     scales: {
@@ -53,16 +52,16 @@ const Timeseries = (props) => {
                             scaleLabel: {
                                 display: true,
                                 labelString: '# of Confirmed Cases',
-                                fontFamily: 'Georgia',
-                                fontColor: 'Gray'
+                                fontFamily,
+                                fontColor,
                             }
                         }],
                         xAxes: [{
                             scaleLabel: {
                                 display: true,
                                 labelString: 'Date',
-                                fontFamily: 'Georgia',
-                                fontColor: 'Gray',
+                                fontFamily,
+                                fontColor,
                             }
                         }]
                     },
@@ -74,20 +73,42 @@ const Timeseries = (props) => {
                             position: 'right',
                             usePointStyle: true,
                         }
-
                     },
                 }}
 
-            /> : null}
+            />}
         </div>
 
     )
 }
 
 Timeseries.propTypes = {
-    all: PropTypes.object
+    /**
+     * Countries mapped to a list of confirmed cases arranged 
+     * by ascending date.
+     */
+    datapoints: PropTypes.object.isRequired,
+
+    /**
+     * List of valid countries.
+     */
+    countries: PropTypes.array.isRequired,
+
+    /**
+     * List of valid dates.
+     */
+    dates: PropTypes.array.isRequired,
+
+    /**
+     * List of selected countries to show on the timeseries.
+     */
+    defaultSelected: PropTypes.array
+
 }
 
+// `react-chartjs-2` is limited in the way it can be configured to be responsive. 
+// Currently it is done by modifying the chart through a callback before it is
+// drawn or redrawn. This can hamper performance **
 const responsiveChartSizing = (c) => {
     const height = c.chart.height
     const width = c.chart.width

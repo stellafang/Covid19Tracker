@@ -6,17 +6,19 @@ const url = 'https://pomber.github.io/covid19/timeseries.json'
 export const fetchData = async () => {
     try {
         const {data} = await axios.get(url)
-        const [dates, countries, worldTotals] = await Promise.all([
+        const [dates, countries, worldTotals, confirmedCasesByCountry] = await Promise.all([
             getDates(data),
             getCountries(data),
-            getWorldTotals(data)
+            getWorldTotals(data),
+            getConfirmedByCountry(data)
         ])
 
         return {
             all: data,
             dates,
             countries,
-            worldTotals
+            worldTotals,
+            confirmedCasesByCountry
         }
     } catch (err) {
         console.error('Error fetching data: ', err)
@@ -74,6 +76,23 @@ const getWorldTotals = async (data) => {
     return worldTotals
 }
 
+/**
+ * Parses the given raw data and returns a map of
+ * country to confirmed number of cases.
+ * @param {Object} data raw data
+ * 
+ * @returns {Object}
+ * @example {totalConfirmed: 10, totalDeaths: 5, totalRecovered: 3}
+ * @see https://pomber.github.io/covid19/timeseries.json
+ */
+const getConfirmedByCountry = async (data) => {
+    const confirmedByCountry = JSON.parse(JSON.stringify(Object.assign({}, data)))
+    Object.keys(data).forEach((country) => {
+        confirmedByCountry[country] = confirmedByCountry[country].map(({confirmed}) => confirmed)
+    })
+    return confirmedByCountry
+}
+
 
 /**
  * Gets the total number 'confirmed', 'deaths', 'recovered' cases between the 
@@ -95,6 +114,7 @@ export const getCountryTotalsInDateRange = (data, dates, start, end) => {
         totalConfirmed: stats[indexEnd].confirmed - stats[indexStart - 1].confirmed,
         totalDeaths: stats[indexEnd].deaths - stats[indexStart - 1].deaths,
         totalRecovered: stats[indexEnd].recovered - stats[indexStart - 1].recovered
-
     }))
 }
+
+

@@ -1,7 +1,9 @@
 import React, {useEffect, useState, useReducer} from 'react';
 import {Timeseries, Cards, Table, DateRangePicker, CountryColorPicker} from './components'
-import GlobalState, {reducer} from './components/global-state'
+import GlobalState from './global-state'
+import reducer from './global-state/reducer'
 import {fetchData, getCountryTotalsInDateRange} from './api'
+import {getDiffInDays, toReadableDates, getSubsetDates} from './utils'
 import styles from './app.module.css'
 
 const initialState = {
@@ -20,21 +22,27 @@ const App = () => {
   const [data, setData] = useState({})
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
+  const {all, dates, worldTotals, countries, confirmedCasesByCountry} = data
 
-
-  const {all, dates, worldTotals, countries} = data
   const {countryToColor} = state
 
   const getData = async () => {
     const res = await fetchData()
     setData(res)
-
     setStartDate(res.dates[0])
     setEndDate(res.dates[res.dates.length - 1])
   }
 
-  const tableRows = startDate && endDate ?
-    getCountryTotalsInDateRange(all, dates, startDate, endDate) : []
+  let timeSeriesSubset
+
+  if (confirmedCasesByCountry) {
+    let startDateIndex = dates && getDiffInDays(dates[0], startDate)
+    let endDateIndex = dates && getDiffInDays(dates[0], endDate) + 1
+    timeSeriesSubset = JSON.parse(JSON.stringify(Object.assign({}, confirmedCasesByCountry)))
+    countries.forEach((country) => {
+      timeSeriesSubset[country] = timeSeriesSubset[country].splice(startDateIndex, endDateIndex)
+    })
+  }
 
   useEffect(() => {
     getData()
@@ -44,8 +52,6 @@ const App = () => {
     <GlobalState initialState={state} dispatch={dispatch}>
       <div className={styles.app}>
         <h1>Covid-19 Tracker</h1>
-        {/* <DateRangePicker min={dates && dates[0]} max={dates && dates[dates.length - 1]} dates={dates} /> */}
-
         {dates &&
           <DateRangePicker
             min={dates[0]}
@@ -54,11 +60,22 @@ const App = () => {
             onEndChange={(date) => setEndDate(date)} />
         }
         {/* {dates ? <Cards totals={worldTotals} lastUpdated={dates[dates.length - 1]} /> : null} */}
-        <Timeseries all={all} dates={dates} dateRange={{start: startDate, end: endDate}} countries={data.countries} />
+        {dates && timeSeriesSubset &&
+          <Timeseries
+            datapoints={timeSeriesSubset}
+            dates={toReadableDates(getSubsetDates(dates, startDate, endDate))}
+            countries={data.countries}
+            defaultSelected={['Canada', 'China']} />
+        }
 
         <h2>Total Confirmed Cases by Country in Selected Date Range</h2>
-        <Table rows={tableRows} columns={tableColumns} rowColorByFirstColumnMap={countryToColor} />
-        <CountryColorPicker countriesMap={all} countries={data.countries} />
+        {startDate && endDate &&
+          <Table
+            rows={getCountryTotalsInDateRange(all, dates, startDate, endDate)}
+            columns={tableColumns}
+            rowColorByFirstColumnMap={countryToColor} />
+        }
+        <CountryColorPicker countries={data.countries} />
       </div>
     </GlobalState>
   )
