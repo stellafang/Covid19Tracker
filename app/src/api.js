@@ -6,13 +6,16 @@ const url = 'https://pomber.github.io/covid19/timeseries.json'
 export const fetchData = async () => {
     try {
         const {data} = await axios.get(url)
-
-        const dates = getDates(data)
-        const worldTotals = getWorldTotals(data)
+        const [dates, countries, worldTotals] = await Promise.all([
+            getDates(data),
+            getCountries(data),
+            getWorldTotals(data)
+        ])
 
         return {
             all: data,
             dates,
+            countries,
             worldTotals
         }
     } catch (err) {
@@ -32,9 +35,18 @@ export const fetchData = async () => {
  * @returns {Array<Date>}
  * @see https://pomber.github.io/covid19/timeseries.json
  */
-const getDates = (data) => (
+const getDates = async (data) => (
     data ? data[Object.keys(data)[0]].map(({date}) => new Date(date)) : []
 )
+
+/**
+ * Parses the given raw data and returns a list of countries there is data for.
+ * @param {Object} data raw data
+ * 
+ * @returns {Array<String>} countries
+ * @see https://pomber.github.io/covid19/timeseries.json
+ */
+const getCountries = async (data) => (data ? Object.keys(data) : [])
 
 
 /**
@@ -46,7 +58,7 @@ const getDates = (data) => (
  * @example {totalConfirmed: 10, totalDeaths: 5, totalRecovered: 3}
  * @see https://pomber.github.io/covid19/timeseries.json
  */
-const getWorldTotals = (data) => {
+const getWorldTotals = async (data) => {
     const worldTotals = {
         totalConfirmed: 0,
         totalDeaths: 0,
