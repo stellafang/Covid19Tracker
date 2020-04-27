@@ -54,14 +54,14 @@ const App = () => {
             onEndChange={(date) => setEndDate(date)} />
         }
         {/* {dates ? <Cards totals={worldTotals} lastUpdated={dates[dates.length - 1]} /> : null} */}
-        <Timeseries all={all} dates={dates} dateRange={{start: startDate, end: endDate}} countries={countries} />
+        <Timeseries all={all} dates={dates} dateRange={{start: startDate, end: endDate}} countries={data.countries} />
 
         <h2>Total Confirmed Cases by Country in Selected Date Range</h2>
         <Table rows={tableRows} columns={tableColumns} rowColorByFirstColumnMap={countryToColor} />
-        <CountryColorPicker countriesMap={all} />
+        <CountryColorPicker countriesMap={all} countries={data.countries} />
       </div>
     </GlobalState>
-  );
+  )
 }
 
 export default App;

@@ -2,7 +2,7 @@ import React, {useEffect, useContext} from 'react'
 import PropTypes from 'prop-types'
 import {Chart, Line} from 'react-chartjs-2'
 import styles from './index.module.css'
-import CountryPicker from '../../components/CountryPicker'
+import ItemPicker from '../../components/ItemPicker'
 import {GlobalStateContext} from '../global-state'
 import {toReadableDates, getDiffInDays, getSubsetDates} from '../../utils'
 
@@ -28,9 +28,9 @@ const Timeseries = (props) => {
 
     return (
         <div className={styles.timeseries}>
-            <div className={styles.countryPicker}>
-                <CountryPicker countriesMap={all} handler={handleChange} multiple={true} default={defaultCountries} />
-            </div>
+            {props.countries && <div className={styles.countryPicker}>
+                <ItemPicker label='Country' items={props.countries} handler={handleChange} multiple={true} defaultSelected={defaultCountries} />
+            </div>}
 
             {all ? <Line classNames
                 data={{
