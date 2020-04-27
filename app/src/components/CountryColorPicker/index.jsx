@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react'
 import PropTypes from 'prop-types'
 import CountryPicker from '../../components/CountryPicker'
-import {Button} from '@material-ui/core'
+import {Button, Grid} from '@material-ui/core'
 import {GlobalDispatchContext, SET_COUNTRY_TO_COLOR} from '../global-state'
 import styles from './index.module.css'
 import ColorPicker from '../../components/ColorPicker/index.jsx'
@@ -24,21 +24,18 @@ const CountryColorPicker = (props) => {
         }
     }
 
-    const handleChange = (selectedCountry) => {
-        console.log('select country: ', selectedCountry)
-        setCountry(selectedCountry)
-    };
-
-    const onSelectColor = (selectedColor) => {
-        console.log('select color: ', selectedColor)
-        setColor(selectedColor)
-    }
-
     return (
         <div className={styles.root}>
-            <CountryPicker countriesMap={countriesMap} handleChange={handleChange} />
-            <ColorPicker defaultColor={defaultColor} onSelectColor={onSelectColor} />
-            <Button variant="contained" onClick={() => submit(color, country)}>Set Color</Button>
+            <div className={styles.child}>
+                <CountryPicker countriesMap={countriesMap} handler={(newCountry) => setCountry(newCountry)} />
+            </div>
+
+            <div className={styles.child}>
+                <ColorPicker defaultColor={defaultColor} handler={(newColor) => setColor(newColor)} />
+            </div>
+            <div className={styles.child}>
+                <Button variant="contained" onClick={() => submit(color, country)}>Set Color</Button>
+            </div>
         </div>
     )
 }

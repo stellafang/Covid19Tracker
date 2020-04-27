@@ -6,48 +6,35 @@ import {InputLabel, MenuItem, FormControl, Select} from '@material-ui/core';
 
 const CountryPicker = (props) => {
     const [country, setCountry] = useState(props.default || '')
-    const {countriesMap, handleChange} = props
+    const {countriesMap, handler} = props
 
     const [countries, setCountries] = useState(props.default || [])
 
-    const handler = (event) => {
+    const handleChange = (event) => {
         const val = event.target.value
         if (props.multiple) {
             setCountries(val);
         } else {
             setCountry(val);
         }
-        handleChange(val)
+        handler(val)
     };
 
     useEffect(() => {
     }, [props.countriesMap])
 
 
-    return (countriesMap ? <FormControl variant="outlined" className={styles.root}>
-        <InputLabel>Country</InputLabel>
-        {
-            props.multiple ? <Select
-                className={styles.selectMenu}
-                value={countries}
-                onChange={handler}
-                label="Country"
-                multiple={true}
-            >
-                <MenuItem value="">
-                    <em>None</em>
-                </MenuItem>
-                {
-                    countriesMap ? Object.keys(countriesMap).map((country) => (
-                        <MenuItem value={country} key={country}>{country}</MenuItem>
-                    )) : null
-                }
-            </Select> : <Select
-                className={styles.selectMenu}
-                value={country}
-                onChange={handler}
-                label="Country"
-            >
+    return (countriesMap ? <div className={styles.root}>
+        <FormControl size='small' fullWidth='true' variant="outlined">
+            <InputLabel>Country</InputLabel>
+            {
+                props.multiple ? <Select
+                    className={styles.selectMenu}
+                    value={countries}
+                    onChange={handleChange}
+                    label="Country"
+                    multiple={true}
+                >
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
@@ -56,41 +43,38 @@ const CountryPicker = (props) => {
                             <MenuItem value={country} key={country}>{country}</MenuItem>
                         )) : null
                     }
-                </Select>
-        }
-        {/* <Select
-            className={styles.selectMenu}
-            value={countries}
-            onChange={handler}
-            label="Country"
-            multiple={true}
-        >
-            <MenuItem value="">
-                <em>None</em>
-            </MenuItem>
-            {
-                countriesMap ? Object.keys(countriesMap).map((country) => (
-                    <MenuItem value={country} key={country}>{country}</MenuItem>
-                )) : null
+                </Select> : <Select
+                    className={styles.selectMenu}
+                    value={country}
+                    onChange={handleChange}
+                    label="Country"
+                >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        {
+                            countriesMap ? Object.keys(countriesMap).map((country) => (
+                                <MenuItem value={country} key={country}>{country}</MenuItem>
+                            )) : null
+                        }
+                    </Select>
             }
-        </Select> */}
-    </FormControl> : null)
+        </FormControl></div> : null)
 }
 
 CountryPicker.propTypes = {
     countriesMap: PropTypes.object,
 
     /**
-     * Your own custom handle change function that returns either
-     * the country selected if multiple is set to false or
-     * all the countries selected if multiple is set to true.
+     * Your own custom handler called whenever a country is selected.
+     * Recieve all countries selected so far if "multiple=true".
      */
-    handleChange: PropTypes.func,
+    handler: PropTypes.func,
 
     /**
      * A valid default country name
      */
-    default: PropTypes.string,
+    default: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
     /**
      * Allow multiple select. (default: false)

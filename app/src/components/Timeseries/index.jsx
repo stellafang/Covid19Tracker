@@ -38,14 +38,15 @@ const Timeseries = (props) => {
     const responsiveChartSizing = (c) => {
         const height = c.chart.height
         const width = c.chart.width
-        if (c.height < 600 || c.width < 600) {
+        if (c.height < 800 || c.width < 600) {
             c.scales['y-axis-0'].options.scaleLabel.fontSize = height * 5 / 200
             c.scales['x-axis-0'].options.scaleLabel.fontSize = width * 5 / 200
             c.scales['x-axis-0'].options.ticks.maxTicksLimit = width / 100
+            c.scales['y-axis-0'].options.ticks.maxTicksLimit = height / 50
             c.scales['x-axis-0'].options.ticks.minor.fontSize = Math.min(width * 5 / 100, 10)
             c.scales['y-axis-0'].options.ticks.minor.fontSize = Math.min(height * 5 / 100, 10)
-            c.titleBlock.options.fontSize = width * 5 / 200
-            c.legend.options.labels.fontSize = width * 5 / 200
+            c.titleBlock.options.fontSize = Math.min(width * 5 / 200, height * 5 / 100)
+            c.legend.options.labels.fontSize = Math.min(width * 5 / 200, height * 5 / 100)
             c.scales['x-axis-0'].options.ticks.maxRotation = 0
         } else {
             c.scales['y-axis-0'].options.scaleLabel.fontSize = 25
@@ -53,6 +54,7 @@ const Timeseries = (props) => {
             c.scales['x-axis-0'].options.ticks.minor.fontSize = 10
             c.scales['y-axis-0'].options.ticks.minor.fontSize = 10
             c.scales['x-axis-0'].options.ticks.maxTicksLimit = 30
+            c.scales['y-axis-0'].options.ticks.maxTicksLimit = 30
             c.scales['x-axis-0'].options.ticks.maxRotation = 30
             c.titleBlock.options.fontSize = 28
             c.legend.options.labels.fontSize = 20
@@ -66,7 +68,10 @@ const Timeseries = (props) => {
 
     return (
         <div className={styles.timeseries}>
-            <CountryPicker countriesMap={all} handler={handleChange} multiple={true} default={defaultCountries} />
+            <div className={styles.countryPicker}>
+                <CountryPicker countriesMap={all} handler={handleChange} multiple={true} default={defaultCountries} />
+            </div>
+
             {all ? <Line classNames
                 data={{
                     labels: datesToInclude.map((date) => date),

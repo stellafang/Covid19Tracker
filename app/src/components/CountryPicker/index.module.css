@@ -1,8 +1,8 @@
 .root {
-    margin: 10px !important;
+    width: 100%
 }
 
 ul {
-    max-height: 400px;
+    max-height: 40vh;
     overflow-y: auto;
 }

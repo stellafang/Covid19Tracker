@@ -43,7 +43,7 @@ const CustomTable = (props) => {
     };
 
     return (
-        <Grid container item xs={3} md={9} justify='center'>
+        <Grid className={styles.container} container item xs={12} md={9} justify='center'>
             <Paper className={styles.root}>
                 <TableContainer>
                     <Table stickyHeader aria-label="sticky table">

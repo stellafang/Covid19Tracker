@@ -1,5 +1,14 @@
 .root {
-    margin: 10px;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 0px;
+    max-width: 100px;
+}
+
+.preview {
+    height: 30px;
+    border: none;
+    width: 100%;
 }
 
 .text {
@@ -7,11 +16,5 @@
 }
 
 .palette {
-    position: absolute;
     z-index: 100;
-}
-
-.preview {
-    height: 30px;
-    border: none;
 }
