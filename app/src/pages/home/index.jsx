@@ -50,6 +50,8 @@ const Home = () => {
     return (
         <div className={styles.home}>
             <h1>Covid-19 Tracker</h1>
+            <Cards totals={worldTotals} />
+            <h4>Date Range in View</h4>
             {dates ?
                 <DateRangePicker
                     min={dates[0]}
@@ -58,28 +60,28 @@ const Home = () => {
                     onEndChange={(date) => setEndDate(date)} />
                 : <SkeletonBlock height={'70px'} />
             }
-            {/* {dates ? <Cards totals={worldTotals} lastUpdated={dates[dates.length - 1]} /> : null} */}
             {dates && timeSeriesSubset ?
                 <Timeseries
                     datapoints={timeSeriesSubset}
                     dates={toReadableDates(getSubsetDates(dates, startDate, endDate))}
                     countries={data.countries}
                     defaultSelected={['Afghanistan', 'Canada', 'China']} />
-                : <SkeletonBlock height={'50vh'} />
+                : <SkeletonBlock height={'45vh'} />
             }
 
             <h2>Total Confirmed Cases by Country in Selected Date Range</h2>
-            {startDate && endDate ?
-                <Table
-                    rows={getCountryTotalsInDateRange(all, dates, startDate, endDate)}
-                    columns={tableColumns}
-                    rowColorByFirstColumnMap={countryToColor} />
-                : <SkeletonBlock height={'470px'} />
+            {
+                startDate && endDate ?
+                    <Table
+                        rows={getCountryTotalsInDateRange(all, dates, startDate, endDate)}
+                        columns={tableColumns}
+                        rowColorByFirstColumnMap={countryToColor} />
+                    : <SkeletonBlock height={'470px'} />
             }
             <Button component={Link} to='settings' variant='contained' color='primary'>
                 Change Country Color
             </Button>
-        </div>
+        </div >
     )
 }
 

@@ -2,18 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import {Card, CardContent, Typography, Grid} from '@material-ui/core'
+import SkeletonBlock from '../../components/SkeletonBlock'
 import CountUp from 'react-countup'
 import styles from './index.module.css'
 
 const Cards = (props) => {
-    const {totals, lastUpdated} = props
-    if (!totals)
-        return 'Loading...'
+    const {totals} = props
     return (
         <div className={styles.container}>
-            <Grid container spacing={3} justify='center'>
-                <Grid className={styles.card} xs={3} md={12} item component={Card}>
-                    <CardContent>
+            <Grid container spacing={3} justify={'center'}>
+                <Grid className={styles.card} xs={12} md={3} item component={Card}>
+                    {totals ? <CardContent>
                         <Typography color="textSecondary" gutterBottom>World Total Confirmed Cases</Typography>
                         <Typography variant="h5">
                             <CountUp
@@ -23,36 +22,33 @@ const Cards = (props) => {
                                 separator=","
                             />
                         </Typography>
-                        <Typography color="textSecondary">{lastUpdated.toDateString()}</Typography>
-                    </CardContent>
+                    </CardContent> : <SkeletonBlock height={'130px'} width={'200px'} />}
                 </Grid>
-                <Grid className={styles.card} xs={3} md={12} item component={Card}>
-                    <CardContent>
-                        <Typography color="textSecondary" gutterBottom>World Total Confirmed Cases</Typography>
+                <Grid className={styles.card} xs={12} md={3} item component={Card}>
+                    {totals ? <CardContent>
+                        <Typography color="textSecondary" gutterBottom>World Total Deaths</Typography>
                         <Typography variant="h5">
                             <CountUp
                                 start={0}
-                                end={totals.totalConfirmed}
+                                end={totals.totalDeaths}
                                 duration={1}
                                 separator=","
                             />
                         </Typography>
-                        <Typography color="textSecondary">{lastUpdated.toDateString()}</Typography>
-                    </CardContent>
+                    </CardContent> : <SkeletonBlock height={'130px'} width={'200px'} />}
                 </Grid>
-                <Grid className={styles.card} xs={3} md={12} item component={Card}>
-                    <CardContent>
-                        <Typography color="textSecondary" gutterBottom>World Total Confirmed Cases</Typography>
+                <Grid className={styles.card} xs={12} md={3} item component={Card}>
+                    {totals ? <CardContent>
+                        <Typography color="textSecondary" gutterBottom>World Total Recovered</Typography>
                         <Typography variant="h5">
                             <CountUp
                                 start={0}
-                                end={totals.totalConfirmed}
+                                end={totals.totalRecovered}
                                 duration={1}
                                 separator=","
                             />
                         </Typography>
-                        <Typography color="textSecondary">{lastUpdated.toDateString()}</Typography>
-                    </CardContent>
+                    </CardContent> : <SkeletonBlock height={'130px'} width={'200px'} />}
                 </Grid>
             </Grid>
         </div>
