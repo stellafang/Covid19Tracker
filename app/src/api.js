@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {getDiffInDays} from './utils'
+import {getDiffInDays, convertToDate} from './utils'
 const url = 'https://pomber.github.io/covid19/timeseries.json'
 
 
@@ -37,9 +37,9 @@ export const fetchData = async () => {
  * @returns {Array<Date>}
  * @see https://pomber.github.io/covid19/timeseries.json
  */
-const getDates = async (data) => (
-    data ? data[Object.keys(data)[0]].map(({date}) => new Date(date)) : []
-)
+export const getDates = async (data) => {
+    return data ? data[Object.keys(data)[0]].map(({date}) => new Date(convertToDate(date))) : []
+}
 
 /**
  * Parses the given raw data and returns a list of countries there is data for.
@@ -48,19 +48,19 @@ const getDates = async (data) => (
  * @returns {Array<String>} countries
  * @see https://pomber.github.io/covid19/timeseries.json
  */
-const getCountries = async (data) => (data ? Object.keys(data) : [])
+export const getCountries = async (data) => (data ? Object.keys(data) : [])
 
 
 /**
  * Parses the given raw data and returns world total
- * number of'confirmed', 'deaths', 'recovered' cases.
+ * number of 'confirmed', 'deaths', 'recovered' cases.
  * @param {Object} data raw data
  * 
  * @returns {Object}
  * @example {totalConfirmed: 10, totalDeaths: 5, totalRecovered: 3}
  * @see https://pomber.github.io/covid19/timeseries.json
  */
-const getWorldTotals = async (data) => {
+export const getWorldTotals = async (data) => {
     const worldTotals = {
         totalConfirmed: 0,
         totalDeaths: 0,
@@ -85,7 +85,7 @@ const getWorldTotals = async (data) => {
  * @example {totalConfirmed: 10, totalDeaths: 5, totalRecovered: 3}
  * @see https://pomber.github.io/covid19/timeseries.json
  */
-const getConfirmedByCountry = async (data) => {
+export const getConfirmedByCountry = async (data) => {
     const confirmedByCountry = JSON.parse(JSON.stringify(Object.assign({}, data)))
     Object.keys(data).forEach((country) => {
         confirmedByCountry[country] = confirmedByCountry[country].map(({confirmed}) => confirmed)
