@@ -63,7 +63,7 @@ const Home = () => {
                     datapoints={timeSeriesSubset}
                     dates={toReadableDates(getSubsetDates(dates, startDate, endDate))}
                     countries={data.countries}
-                    defaultSelected={['Canada', 'China']} />
+                    defaultSelected={['Afghanistan', 'Canada', 'China']} />
             }
 
             <h2>Total Confirmed Cases by Country in Selected Date Range</h2>

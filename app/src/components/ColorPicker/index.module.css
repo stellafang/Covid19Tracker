@@ -2,19 +2,19 @@
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     grid-gap: 0px;
-    max-width: 100px;
 }
 
 .preview {
     height: 30px;
     border: none;
-    width: 100%;
 }
 
-.text {
+input {
     font-size: 15px;
+    border: 1px solid lightgray;
 }
 
 .palette {
     z-index: 100;
+    position: absolute;
 }

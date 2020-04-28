@@ -1,0 +1,14 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+.pickers {
+    margin-bottom: 30px;
+    width: 100%;
+}
+.card {
+    margin-top: 20px;
+    height: 370px;
+    min-width: 300px;
+}

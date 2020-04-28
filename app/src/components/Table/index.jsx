@@ -76,7 +76,8 @@ const Table = (props) => {
 
 Table.propTypes = {
     /**
-     * An array of rows represented by an object of keys for each column and its accompanying value.
+     * An array of rows of objects containing keys for each column
+     * and its accompanying value.
      */
     rows: PropTypes.array.isRequired,
 

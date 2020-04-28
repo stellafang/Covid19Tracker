@@ -29,13 +29,10 @@ const ItemPicker = (props) => {
                         label={label}
                         multiple={multiple}
                     >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
                         {
-                            items && items.map((item) => (
+                            items ? items.map((item) => (
                                 <MenuItem value={item} key={item}>{item}</MenuItem>
-                            ))
+                            )) : <MenuItem value=""><em>None</em></MenuItem>
                         }
                     </Select>
                 }
