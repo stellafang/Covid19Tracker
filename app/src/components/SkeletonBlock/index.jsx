@@ -19,7 +19,7 @@ const SkeletonBlock = (props) => {
     const attributes = {
         ...props,
         role: 'presentation',
-        // className: classes,
+        className: 'skeleton-block',
         style: styles
     }
 
