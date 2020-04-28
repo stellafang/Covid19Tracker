@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {fetchData} from '../../api'
-import {ItemColorPicker, Table} from '../../components'
+import {ItemColorPicker, Table, SkeletonBlock} from '../../components'
 import {Link} from 'react-router-dom'
 import {Button} from '@material-ui/core'
 import styles from './index.module.css'
@@ -44,7 +44,8 @@ const Settings = () => {
                 </Button>
             </div>
             <div className={styles.picker}>
-                {data.countries && <ItemColorPicker items={data.countries} onSubmit={(c, cs) => handleCountryColorChange(c, cs)} />}
+                {data.countries ? <ItemColorPicker items={data.countries} onSubmit={(c, cs) => handleCountryColorChange(c, cs)} />
+                    : <SkeletonBlock height='390px' />}
             </div>
 
             <div className={styles.table}>

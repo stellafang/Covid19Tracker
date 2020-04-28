@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
-import {Timeseries, Cards, Table, DateRangePicker} from '../../components'
+import {Timeseries, Cards, Table, DateRangePicker, SkeletonBlock} from '../../components'
 import {GlobalStateContext} from '../../global-state'
 import {fetchData, getCountryTotalsInDateRange} from '../../api'
 import {getDiffInDays, toReadableDates, getSubsetDates} from '../../utils'
@@ -50,28 +50,31 @@ const Home = () => {
     return (
         <div className={styles.home}>
             <h1>Covid-19 Tracker</h1>
-            {dates &&
+            {dates ?
                 <DateRangePicker
                     min={dates[0]}
                     max={dates[dates.length - 1]}
                     onStartChange={(date) => setStartDate(date)}
                     onEndChange={(date) => setEndDate(date)} />
+                : <SkeletonBlock height={'70px'} />
             }
             {/* {dates ? <Cards totals={worldTotals} lastUpdated={dates[dates.length - 1]} /> : null} */}
-            {dates && timeSeriesSubset &&
+            {dates && timeSeriesSubset ?
                 <Timeseries
                     datapoints={timeSeriesSubset}
                     dates={toReadableDates(getSubsetDates(dates, startDate, endDate))}
                     countries={data.countries}
                     defaultSelected={['Afghanistan', 'Canada', 'China']} />
+                : <SkeletonBlock height={'50vh'} />
             }
 
             <h2>Total Confirmed Cases by Country in Selected Date Range</h2>
-            {startDate && endDate &&
+            {startDate && endDate ?
                 <Table
                     rows={getCountryTotalsInDateRange(all, dates, startDate, endDate)}
                     columns={tableColumns}
                     rowColorByFirstColumnMap={countryToColor} />
+                : <SkeletonBlock height={'470px'} />
             }
             <Button component={Link} to='settings' variant='contained' color='primary'>
                 Change Country Color
