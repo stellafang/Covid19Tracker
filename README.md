@@ -10,7 +10,7 @@ This React-SPA aims to visualize COVID-19 cases across different countries. The 
 
 ## Notes
 ### Implementation
-- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- This project was bootstrapped with `create-react-app`
 - `Axios` is the HTTP client I used to fetch and cache our dataset.
 - To manage global state, I used pure React to implement a `store`, `dispatch`, `actions` much like Redux but by only using `React's Context API` built on `React Hooks`.
 - The components were largely built using `MaterialUI`. I aimed to make the components standalone so that they can be easily reused. This is with the exception of the `Timeseries` component because it very specific to the page and so didn't make sense to generalize. Also the `Card` component that shows the world stats was just added for fun so I didn't bother generalizing that one either.

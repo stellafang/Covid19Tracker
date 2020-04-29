@@ -18,7 +18,6 @@ describe('Basic test to check all components have no errors mounting', () => {
 
     test('ItemPicker renders without errors', () => {
         const wrapper = mount(<ItemPicker items={['Canada', 'China']} />)
-        console.log('wrapper ', wrapper)
         expect(wrapper.length).toBe(1)
     })
 
