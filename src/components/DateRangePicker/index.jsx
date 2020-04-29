@@ -35,7 +35,7 @@ DatePicker.propTypes = {
 }
 
 function DateRangePicker(props) {
-    const {onStartChange, onEndChange, min, max} = props
+    const {onStartChange, onEndChange, min, max, selectedStart, selectedEnd} = props
     const [startDate, setStartDate] = useState(min)
     const [endDate, setEndDate] = useState(max)
 
@@ -46,7 +46,7 @@ function DateRangePicker(props) {
                     <DatePicker
                         label="Start Date"
                         helperText="Choose a start date"
-                        selected={startDate}
+                        selected={selectedStart}
                         onChange={(date) => {
                             setStartDate(date)
                             onStartChange(date)
@@ -57,7 +57,7 @@ function DateRangePicker(props) {
                     <DatePicker
                         label="End Date"
                         helperText="Choose an end date"
-                        selected={endDate}
+                        selected={selectedEnd}
                         onChange={(date) => {
                             setEndDate(date)
                             onEndChange(date)
@@ -94,8 +94,12 @@ DateRangePicker.propTypes = {
      * onChange callback for Start Calendar.
      * Is provided the selected Date object.
      */
-    onEndChange: PropTypes.func
+    onEndChange: PropTypes.func,
 
+    /**
+     * 
+     */
+    selectedStart: PropTypes.instanceOf(Date)
 }
 
 export default DateRangePicker

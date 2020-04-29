@@ -1,4 +1,4 @@
-import {SET_COUNTRY_TO_COLOR} from './actions'
+import {SET_COUNTRY_TO_COLOR, SET_DATE_RANGE, SET_SELECTED_COUNTRIES} from './actions'
 
 const reducer = (state, action) => {
     const {type, payload} = action;
@@ -12,6 +12,22 @@ const reducer = (state, action) => {
                     ...state.countryToColor,
                     [country]: color
                 }
+            }
+        }
+        case SET_DATE_RANGE: {
+            const {start, end} = payload
+            return {
+                ...state,
+                dateRange: {
+                    start: start || state.dateRange.start,
+                    end: end || state.dateRange.end
+                }
+            }
+        }
+        case SET_SELECTED_COUNTRIES: {
+            return {
+                ...state,
+                selectedCountries: [...payload]
             }
         }
         default:

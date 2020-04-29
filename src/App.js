@@ -5,7 +5,12 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {HomePage, SettingsPage} from './pages'
 
 const initialState = {
-  countryToColor: {}
+  countryToColor: {},
+  selectedCountries: ['Afghanistan', 'Canada', 'China'],
+  dateRange: {
+    start: null,
+    end: null
+  }
 }
 
 const App = () => {

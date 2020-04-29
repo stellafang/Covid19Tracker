@@ -3,15 +3,37 @@ import PropTypes from 'prop-types'
 import {Chart, Line} from 'react-chartjs-2'
 import styles from './index.module.css'
 import ItemPicker from '../../components/ItemPicker'
-import {GlobalStateContext} from '../../global-state'
+import {GlobalStateContext, GlobalDispatchContext} from '../../global-state'
+import {SET_SELECTED_COUNTRIES} from '../../global-state/actions'
+import {getDiffInDays, toReadableDates, getSubsetDates} from '../../utils'
 
 const fontColor = 'Gray'
 const fontFamily = 'Georgia'
 
 const Timeseries = (props) => {
-    const {countries, datapoints, dates, defaultSelected} = props
+    const {countries, datapoints, dates} = props
     const globalState = useContext(GlobalStateContext)
-    const [selected, setSelected] = React.useState(defaultSelected);
+    const dispatch = useContext(GlobalDispatchContext)
+
+    const {selectedCountries, countryToColor, dateRange} = globalState || {}
+
+    let datapointsSubset
+
+    if (datapoints) {
+        let startDateIndex = dates && getDiffInDays(dates[0], dateRange.start)
+        let endDateIndex = dates && getDiffInDays(dates[0], dateRange.end) + 1
+        datapointsSubset = JSON.parse(JSON.stringify(Object.assign({}, datapoints)))
+        countries.forEach((country) => {
+            datapointsSubset[country] = datapointsSubset[country].splice(startDateIndex, endDateIndex)
+        })
+    }
+
+    const setSelectedCountries = (selected) => {
+        dispatch({
+            type: SET_SELECTED_COUNTRIES,
+            payload: selected
+        })
+    }
 
     useEffect(() => {
         Chart.pluginService.register({
@@ -25,18 +47,18 @@ const Timeseries = (props) => {
                 <ItemPicker
                     label='Country'
                     items={countries}
-                    handler={(v) => setSelected(v)}
+                    handler={(v) => setSelectedCountries(v)}
                     multiple={true}
-                    defaultSelected={defaultSelected} />
+                    defaultSelected={selectedCountries} />
             </div>}
 
-            {datapoints && dates && <Line classNames
+            {datapointsSubset && <Line classNames
                 data={{
-                    labels: dates,
-                    datasets: selected.map((country) => ({
-                        data: datapoints[country],
+                    labels: toReadableDates(getSubsetDates(dates, dateRange.start, dateRange.end)),
+                    datasets: selectedCountries.map((country) => ({
+                        data: datapointsSubset[country],
                         label: country,
-                        borderColor: globalState.countryToColor[country] || '#000000',
+                        borderColor: countryToColor[country] || '#000000',
                     }))
                 }}
                 options={{

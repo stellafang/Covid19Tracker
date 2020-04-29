@@ -1,11 +1,11 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {Timeseries, Cards, Table, DateRangePicker, SkeletonBlock} from '../../components'
-import {GlobalStateContext} from '../../global-state'
+import {GlobalStateContext, GlobalDispatchContext} from '../../global-state'
 import {fetchData, getCountryTotalsInDateRange} from '../../api'
-import {getDiffInDays, toReadableDates, getSubsetDates} from '../../utils'
 import styles from './index.module.css'
 import {Button} from '@material-ui/core'
 import {Link} from 'react-router-dom'
+import {SET_DATE_RANGE} from '../../global-state/actions'
 
 const tableColumns = [
     {id: 'country', label: 'Country'},
@@ -14,69 +14,66 @@ const tableColumns = [
     {id: 'totalRecovered', label: 'Recovered'},
 ]
 
-// TODO: Add Skeleton blocks for each component!!
-// TODO: Give each country default color in api somewhere? 
 const Home = () => {
     const state = useContext(GlobalStateContext)
-    const [data, setData] = useState({})
-    const [startDate, setStartDate] = useState()
-    const [endDate, setEndDate] = useState()
-    const {countryToColor} = state
-    const {all, dates, worldTotals, confirmedCasesByCountry, countries} = data
+    const dispatch = useContext(GlobalDispatchContext)
+    const [data, setData] = useState(null)
+    const {countryToColor, dateRange} = state
+    const {all, dates, worldTotals, confirmedCasesByCountry, countries} = data || {}
 
-
-    let timeSeriesSubset
-
-    if (confirmedCasesByCountry) {
-        let startDateIndex = dates && getDiffInDays(dates[0], startDate)
-        let endDateIndex = dates && getDiffInDays(dates[0], endDate) + 1
-        timeSeriesSubset = JSON.parse(JSON.stringify(Object.assign({}, confirmedCasesByCountry)))
-        countries.forEach((country) => {
-            timeSeriesSubset[country] = timeSeriesSubset[country].splice(startDateIndex, endDateIndex)
+    const setDateRange = (start, end) => {
+        dispatch({
+            type: SET_DATE_RANGE,
+            payload: {
+                start,
+                end
+            }
         })
     }
+
 
     useEffect(() => {
         const getData = async () => {
             const res = await fetchData()
             setData(res)
-            setStartDate(res.dates[0])
-            setEndDate(res.dates[res.dates.length - 1])
+            if (!dateRange.start && !dateRange.end) {
+                setDateRange(res.dates[0], res.dates[res.dates.length - 1])
+            }
         }
-
         getData()
     }, [])
 
     return (
         <div className={styles.home}>
             <h1>Covid-19 Tracker</h1>
-            <Cards totals={worldTotals} />
+            {/* <Cards totals={worldTotals} /> */}
             <h4>Date Range in View</h4>
-            {dates ?
+            {data ?
                 <DateRangePicker
                     min={dates[0]}
                     max={dates[dates.length - 1]}
-                    onStartChange={(date) => setStartDate(date)}
-                    onEndChange={(date) => setEndDate(date)} />
+                    onStartChange={(date) => setDateRange(date, null)}
+                    onEndChange={(date) => setDateRange(null, date)}
+                    selectedStart={dateRange.start}
+                    selectedEnd={dateRange.end} />
                 : <SkeletonBlock height={'70px'} />
             }
-            {dates && timeSeriesSubset ?
+            {data ?
                 <Timeseries
-                    datapoints={timeSeriesSubset}
-                    dates={toReadableDates(getSubsetDates(dates, startDate, endDate))}
-                    countries={data.countries}
-                    defaultSelected={['Afghanistan', 'Canada', 'China']} />
+                    datapoints={confirmedCasesByCountry}
+                    dates={dates}
+                    countries={countries} />
                 : <SkeletonBlock height={'45vh'} />
             }
 
             <h2>Total Confirmed Cases by Country in Selected Date Range</h2>
             {
-                startDate && endDate ?
+                data ?
                     <Table
-                        rows={getCountryTotalsInDateRange(all, dates, startDate, endDate)}
+                        rows={getCountryTotalsInDateRange(all, dates, dateRange.start, dateRange.end)}
                         columns={tableColumns}
                         rowColorByFirstColumnMap={countryToColor} />
-                    : <SkeletonBlock height={'470px'} />
+                    : <SkeletonBlock />
             }
             <Button component={Link} to='settings' variant='contained' color='primary'>
                 Change Country Color
