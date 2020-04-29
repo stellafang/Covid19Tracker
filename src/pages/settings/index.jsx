@@ -33,8 +33,6 @@ const Settings = () => {
         getData()
     }, [])
 
-    // TODO: split up the Country Color Picker into it's separate components in the settings page??
-    // TODO: maintain a list of countries to their color
     return (
         <div className={styles.settings}>
             <h1>Settings Page!</h1>

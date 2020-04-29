@@ -1,68 +1,67 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# COVID-19 Tracker
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+## About
+This React-SPA aims to visualize COVID-19 cases across every country. I'm using this dataset [here](https://pomber.github.io/covid19/timeseries.json).
+The features of this app include:
+1) The `home` page has a timeseries plot of confirmed cases by country over a selected timerange. This graph can plot multiple countries at once. The user can add and remove countries from the plot using a dropdown menu; and can adjust the time range using the datepicker.
+2) Below the timeseries is a table of each country and their confirmed number cases, deaths, and recovered within the selected time range (so notice these numbers are adjusted when the time range is changed).
+3) Each country in the timeseries plot and table can be assigned a color for better visualization. Follow the button at the bottom of the `home` page to go to the `settings` page of the SPA. Here, there is a panel to choose a country and a color and button to assign the color to that country. Below this panel is a table that lists country-color settings. Navigate back to the `home` page to see the colors reflected on the plot and table.
+4) At the top of the `home` page is a summary of world total confirmed cases, deaths, and recovered.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Notes
+### Implementation
+- This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- `Axios` is the HTTP client I used to fetch and cache our dataset.
+- To manage global state, I used pure React to implement a 'store', 'dispatch', 'actions' much like Redux but by only using React's Context API built on React Hooks.
+- The components were largely built using `MaterialUI`. I aimed to make the components standalone so that they can be easily reused (exception is the Card component since that was just added for fun to make the world summary data on the home page).
+- The timeseries chart was created using a popular charting library `React-Chartjs-2`
+- To make the app as responsive as possible, I used a combination of CSS Media Queries and MaterialUI Grids. The timeseries chart did not have great responsive design capabilites to I created a plugin that resized the chart manually.
+- I used `React-Router` to route between the `home` page and `settings` page.
+- There are some tests written in Jest! I'm also using Enzyme to more easily test React components.
+- To prevent jumping of components upon loading data from the server, notice that I have used placeholders where the components should go. This is only seen on the first load (or hard refresh) since the data is cached thereafter.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Improvements
+- CSS Preprocessor (i.e. SASS): Since this app is quite small with not much styling repetition and since much of the styling came with MaterialUI, I decided not to go the extra effort to use a css preprocessor.
+- The dropdown menu to select countries was implemented using MaterialUI is slow! I chose to use a feature on their dropdown that allows multiple items to be selected and with the amount of countries there are, this became very slow. To optimize performance, I would either try to implement some sort of debounce so that not all the countries are rendered at once or maybe not use the MaterialUI component.
+- The unit tests I've included are mostly for helper functions rather than React Components, but there are some!
+- Other nice to haves that I would include in a project that was not included here: CircleCI integration; minifying build files; and a more complete testing suite for the React components + integration tests.
 
-### `npm test`
+## Requirements
+```
+  node@v10.17.0
+  npm@v5.7.1
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Setup
 
-### `npm run build`
+Install dependencies using npm:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm i
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Run App
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Run app with:
 
-### `npm run eject`
+```bash
+  npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Testing
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Run tests with:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+  npm test
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Building
 
-## Learn More
+Run tests with:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```bash
+  npm build
+```
