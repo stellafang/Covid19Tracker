@@ -4,12 +4,22 @@ import reducer from './global-state/reducer'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {HomePage, SettingsPage} from './pages'
 
+// Initial dates are from today and 2 months back.
+const startDate = new Date()
+startDate.setDate(startDate.getDate() - 1)
+startDate.setMonth(startDate.getMonth() - 2)
+const endDate = new Date()
+endDate.setDate(endDate.getDate() - 1)
+
+// Initial countries to display.
+const selectedCountries = ['Afghanistan', 'Canada', 'China']
+
 const initialState = {
   countryToColor: {},
-  selectedCountries: ['Afghanistan', 'Canada', 'China'],
+  selectedCountries,
   dateRange: {
-    start: null,
-    end: null
+    start: new Date(startDate),
+    end: new Date(endDate)
   }
 }
 

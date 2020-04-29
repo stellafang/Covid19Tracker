@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {Chart, Line} from 'react-chartjs-2'
 import styles from './index.module.css'
 import ItemPicker from '../../components/ItemPicker'
+import SkeletonBlock from '../../components/SkeletonBlock'
 import {GlobalStateContext, GlobalDispatchContext} from '../../global-state'
 import {SET_SELECTED_COUNTRIES} from '../../global-state/actions'
 import {getDiffInDays, toReadableDates, getSubsetDates} from '../../utils'
@@ -43,16 +44,16 @@ const Timeseries = (props) => {
 
     return (
         <div className={styles.timeseries}>
-            {countries && <div className={styles.countryPicker}>
+            {countries ? <div className={styles.countryPicker}>
                 <ItemPicker
                     label='Country'
                     items={countries}
                     handler={(v) => setSelectedCountries(v)}
                     multiple={true}
                     defaultSelected={selectedCountries} />
-            </div>}
+            </div> : <SkeletonBlock />}
 
-            {datapointsSubset && <Line classNames
+            {datapointsSubset ? <Line classNames
                 data={{
                     labels: toReadableDates(getSubsetDates(dates, dateRange.start, dateRange.end)),
                     datasets: selectedCountries.map((country) => ({
@@ -97,7 +98,7 @@ const Timeseries = (props) => {
                     },
                 }}
 
-            />}
+            /> : <SkeletonBlock />}
         </div>
 
     )
@@ -108,17 +109,17 @@ Timeseries.propTypes = {
      * Countries mapped to a list of confirmed cases arranged 
      * by ascending date.
      */
-    datapoints: PropTypes.object.isRequired,
+    datapoints: PropTypes.object,
 
     /**
      * List of valid countries.
      */
-    countries: PropTypes.array.isRequired,
+    countries: PropTypes.array,
 
     /**
      * List of valid dates.
      */
-    dates: PropTypes.array.isRequired,
+    dates: PropTypes.array,
 
     /**
      * List of selected countries to show on the timeseries.

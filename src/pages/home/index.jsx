@@ -31,14 +31,10 @@ const Home = () => {
         })
     }
 
-
     useEffect(() => {
         const getData = async () => {
             const res = await fetchData()
             setData(res)
-            if (!dateRange.start && !dateRange.end) {
-                setDateRange(res.dates[0], res.dates[res.dates.length - 1])
-            }
         }
         getData()
     }, [])
@@ -46,7 +42,7 @@ const Home = () => {
     return (
         <div className={styles.home}>
             <h1>Covid-19 Tracker</h1>
-            {/* <Cards totals={worldTotals} /> */}
+            <Cards totals={worldTotals} />
             <h4>Date Range in View</h4>
             {data ?
                 <DateRangePicker
@@ -58,13 +54,12 @@ const Home = () => {
                     selectedEnd={dateRange.end} />
                 : <SkeletonBlock height={'70px'} />
             }
-            {data ?
-                <Timeseries
-                    datapoints={confirmedCasesByCountry}
-                    dates={dates}
-                    countries={countries} />
-                : <SkeletonBlock height={'45vh'} />
-            }
+
+            <Timeseries
+                datapoints={confirmedCasesByCountry}
+                dates={dates}
+                countries={countries} />
+
 
             <h2>Total Confirmed Cases by Country in Selected Date Range</h2>
             {
@@ -73,7 +68,7 @@ const Home = () => {
                         rows={getCountryTotalsInDateRange(all, dates, dateRange.start, dateRange.end)}
                         columns={tableColumns}
                         rowColorByFirstColumnMap={countryToColor} />
-                    : <SkeletonBlock />
+                    : <SkeletonBlock height={'470px'} />
             }
             <Button component={Link} to='settings' variant='contained' color='primary'>
                 Change Country Color
