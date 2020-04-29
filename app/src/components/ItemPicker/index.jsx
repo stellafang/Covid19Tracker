@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import styles from './index.module.css'
 import {InputLabel, MenuItem, FormControl, Select} from '@material-ui/core';
@@ -6,16 +6,14 @@ import {InputLabel, MenuItem, FormControl, Select} from '@material-ui/core';
 const ItemPicker = (props) => {
     const {defaultSelected, multiple, handler, items, label} = props
     const [selected, setSelected] = useState(defaultSelected || (multiple ? [] : ''))
-
+    const noneMenuItem = 'None'
     const handleChange = (event) => {
         const val = event.target.value
-        if (val === 'None') return
-        setSelected(val)
-        handler(val)
+        if (val !== noneMenuItem) {
+            setSelected(val)
+            handler(val)
+        }
     };
-
-    useEffect(() => {
-    }, [items])
 
     return (
         <div className={styles.root}>
@@ -32,7 +30,7 @@ const ItemPicker = (props) => {
                         {
                             items ? items.map((item) => (
                                 <MenuItem value={item} key={item}>{item}</MenuItem>
-                            )) : <MenuItem value=""><em>None</em></MenuItem>
+                            )) : <MenuItem value=""><em>{noneMenuItem}</em></MenuItem>
                         }
                     </Select>
                 }

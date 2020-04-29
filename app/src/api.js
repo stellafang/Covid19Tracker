@@ -1,11 +1,19 @@
-import axios from 'axios'
 import {getDiffInDays, convertToDate} from './utils'
+import {setup} from 'axios-cache-adapter'
 const url = 'https://pomber.github.io/covid19/timeseries.json'
 
+// Configure Axios with cache
+const instance = setup({
+    baseURL: url,
+    cache: {
+        maxAge: 15 * 60 * 1000
+    }
+})
 
 export const fetchData = async () => {
     try {
-        const {data} = await axios.get(url)
+        const {data} = await instance.get(url)
+
         const [dates, countries, worldTotals, confirmedCasesByCountry] = await Promise.all([
             getDates(data),
             getCountries(data),

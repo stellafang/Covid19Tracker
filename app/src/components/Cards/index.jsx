@@ -8,6 +8,7 @@ import styles from './index.module.css'
 
 const Cards = (props) => {
     const {totals} = props
+    const {totalConfirmed, totalDeaths, totalRecovered} = totals || {}
     return (
         <div className={styles.container}>
             <Grid container spacing={3} justify={'center'}>
@@ -17,7 +18,7 @@ const Cards = (props) => {
                         <Typography variant="h5">
                             <CountUp
                                 start={0}
-                                end={totals.totalConfirmed}
+                                end={totalConfirmed}
                                 duration={1}
                                 separator=","
                             />
@@ -30,7 +31,7 @@ const Cards = (props) => {
                         <Typography variant="h5">
                             <CountUp
                                 start={0}
-                                end={totals.totalDeaths}
+                                end={totalDeaths}
                                 duration={1}
                                 separator=","
                             />
@@ -43,7 +44,7 @@ const Cards = (props) => {
                         <Typography variant="h5">
                             <CountUp
                                 start={0}
-                                end={totals.totalRecovered}
+                                end={totalRecovered}
                                 duration={1}
                                 separator=","
                             />

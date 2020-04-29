@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    width: 100%;
+    width: 85%;
     height: 40vh;
     min-height: 400px;
     max-width: 1300px;
@@ -10,7 +10,16 @@
 }
 
 .countryPicker {
-    width: 30%;
-    min-width: 125px;
+    width: 40%;
 }
 
+
+@media (max-width: 770px) {
+    .timeseries {
+        width: 100%
+    }
+    
+    .countryPicker {
+        width: 100%
+    }
+}

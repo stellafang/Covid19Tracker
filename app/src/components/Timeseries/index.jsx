@@ -17,7 +17,7 @@ const Timeseries = (props) => {
         Chart.pluginService.register({
             beforeDraw: ((c, opts) => responsiveChartSizing(c))
         })
-    }, [setSelected, props.dateRange, globalState.countryToColor])
+    }, [])
 
     return (
         <div className={styles.timeseries}>

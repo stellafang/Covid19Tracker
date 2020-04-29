@@ -21,16 +21,9 @@ const Home = () => {
     const [data, setData] = useState({})
     const [startDate, setStartDate] = useState()
     const [endDate, setEndDate] = useState()
-    const {all, dates, worldTotals, countries, confirmedCasesByCountry} = data
-
     const {countryToColor} = state
+    const {all, dates, worldTotals, confirmedCasesByCountry, countries} = data
 
-    const getData = async () => {
-        const res = await fetchData()
-        setData(res)
-        setStartDate(res.dates[0])
-        setEndDate(res.dates[res.dates.length - 1])
-    }
 
     let timeSeriesSubset
 
@@ -44,6 +37,13 @@ const Home = () => {
     }
 
     useEffect(() => {
+        const getData = async () => {
+            const res = await fetchData()
+            setData(res)
+            setStartDate(res.dates[0])
+            setEndDate(res.dates[res.dates.length - 1])
+        }
+
         getData()
     }, [])
 

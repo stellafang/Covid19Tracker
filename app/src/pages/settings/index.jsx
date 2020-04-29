@@ -13,13 +13,9 @@ const tableColumns = [
     {id: 'color', label: 'Color'}
 ]
 const Settings = () => {
-    const [data, setData] = useState({})
     const dispatch = useContext(GlobalDispatchContext)
     const state = useContext(GlobalStateContext)
-    const getData = async () => {
-        const res = await fetchData()
-        setData(res)
-    }
+    const [countries, setCountries] = useState()
 
     const handleCountryColorChange = (country, color) => {
         dispatch({
@@ -30,6 +26,10 @@ const Settings = () => {
         })
     }
     useEffect(() => {
+        const getData = async () => {
+            const res = await fetchData()
+            setCountries(res.countries)
+        }
         getData()
     }, [])
 
@@ -44,7 +44,7 @@ const Settings = () => {
                 </Button>
             </div>
             <div className={styles.picker}>
-                {data.countries ? <ItemColorPicker items={data.countries} onSubmit={(c, cs) => handleCountryColorChange(c, cs)} />
+                {countries ? <ItemColorPicker items={countries} onSubmit={(c, cs) => handleCountryColorChange(c, cs)} />
                     : <SkeletonBlock height='390px' />}
             </div>
 
