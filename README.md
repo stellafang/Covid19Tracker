@@ -1,7 +1,5 @@
 # COVID-19 Tracker
 
-
-
 ## About
 This React-SPA aims to visualize COVID-19 cases across every country. I'm using this dataset [here](https://pomber.github.io/covid19/timeseries.json).
 The features of this app include:
