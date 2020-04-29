@@ -35,10 +35,10 @@ const Settings = () => {
 
     return (
         <div className={styles.settings}>
-            <h1>Settings Page!</h1>
+            <h1>Settings Page</h1>
             <div className={styles.button}>
                 <Button className={styles.button} component={Link} to='/' variant='contained' color='primary'>
-                    Back To Main Page
+                    Back to Home
                 </Button>
             </div>
             <div className={styles.picker}>
