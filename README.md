@@ -1,6 +1,4 @@
 # COVID-19 Tracker
-
-## About
 This React-SPA aims to visualize COVID-19 cases across every country. I'm using this dataset [here](https://pomber.github.io/covid19/timeseries.json).
 The features of this app include:
 1) The `home` page has a timeseries plot of confirmed cases by country over a selected timerange. This graph can plot multiple countries at once. The user can add and remove countries from the plot using a dropdown menu; and can adjust the time range using the datepicker.
